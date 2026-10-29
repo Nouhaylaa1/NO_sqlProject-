@@ -1,0 +1,116 @@
+{
+  "projet": "BiblioCampus",
+  "formatCommun": {
+    "eventId": "string",
+    "type": "string",
+    "serviceEmetteur": "string",
+    "serviceRecepteur": "string",
+    "agregatId": "string",
+    "version": "integer",
+    "dateEvenement": "date-time",
+    "modifications": [
+      {
+        "chemin": "string",
+        "nouvelleValeur": "any"
+      }
+    ]
+  },
+  "evenements": [
+    {
+      "eventId": "event-livre-101-v1",
+      "type": "LivreCree",
+      "serviceEmetteur": "Catalogue",
+      "serviceRecepteur": "Emprunts",
+      "agregatId": "livreId",
+      "version": 1,
+      "dateEvenement": "2026-10-01T09:00:00Z",
+      "modifications": [
+        {
+          "chemin": "livre",
+          "nouvelleValeur": {
+            "livreId": "livre-101",
+            "titre": "Bases de donnees",
+            "auteur": "A. Martin",
+            "nombreExemplaires": 3,
+            "version": 1
+          }
+        }
+      ],
+      "effet": "Creer la copie LivrePourEmprunt dans le service Emprunts."
+    },
+    {
+      "eventId": "event-livre-101-v2",
+      "type": "LivreMisAJour",
+      "serviceEmetteur": "Catalogue",
+      "serviceRecepteur": "Emprunts",
+      "agregatId": "livre-101",
+      "version": 2,
+      "dateEvenement": "2026-10-02T09:00:00Z",
+      "modifications": [
+        {
+          "chemin": "nombreExemplaires",
+          "nouvelleValeur": 4
+        }
+      ],
+      "effet": "Mettre a jour le champ nombreExemplaires de la copie locale."
+    },
+    {
+      "eventId": "event-membre-201-v1",
+      "type": "MembreCree",
+      "serviceEmetteur": "Membres",
+      "serviceRecepteur": "Emprunts",
+      "agregatId": "membre-201",
+      "version": 1,
+      "dateEvenement": "2026-10-01T09:30:00Z",
+      "modifications": [
+        {
+          "chemin": "membre",
+          "nouvelleValeur": {
+            "membreId": "membre-201",
+            "nom": "Camille",
+            "statut": "actif",
+            "version": 1
+          }
+        }
+      ],
+      "effet": "Creer la copie MembrePourEmprunt dans le service Emprunts."
+    },
+    {
+      "eventId": "event-emprunt-301-v1",
+      "type": "EmpruntCree",
+      "serviceEmetteur": "Emprunts",
+      "serviceRecepteur": "Statistiques",
+      "agregatId": "emprunt-301",
+      "version": 1,
+      "dateEvenement": "2026-10-03T10:00:00Z",
+      "modifications": [
+        {
+          "chemin": "emprunt",
+          "nouvelleValeur": {
+            "empruntId": "emprunt-301",
+            "dateEmprunt": "2026-10-01",
+            "statut": "en_cours",
+            "version": 1
+          }
+        }
+      ],
+      "effet": "Creer la copie de l'emprunt utilisee pour les statistiques."
+    },
+    {
+      "eventId": "event-emprunt-301-v2",
+      "type": "EmpruntMisAJour",
+      "serviceEmetteur": "Emprunts",
+      "serviceRecepteur": "Statistiques",
+      "agregatId": "emprunt-301",
+      "version": 2,
+      "dateEvenement": "2026-10-10T10:00:00Z",
+      "modifications": [
+        {
+          "chemin": "statut",
+          "nouvelleValeur": "retourne"
+        }
+      ],
+      "effet": "Mettre a jour la copie de l'emprunt et recalculer la projection si besoin."
+    }
+  ]
+}
