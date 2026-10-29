@@ -1,0 +1,91 @@
+{
+  "projet": "BiblioCampus",
+  "services": [
+    {
+      "nom": "Catalogue",
+      "responsabilite": "Gerer les livres et le nombre d'exemplaires.",
+      "commandes": [
+        {
+          "nom": "AjouterLivre",
+          "entrees": {
+            "titre": "string",
+            "auteur": "string",
+            "isbn": "string",
+            "nombreExemplaires": "integer"
+          },
+          "traitement": "Creer le livre dans le catalogue et publier un evenement de creation."
+        },
+        {
+          "nom": "ModifierLivre",
+          "entrees": {
+            "livreId": "string",
+            "titre": "string",
+            "auteur": "string",
+            "nombreExemplaires": "integer"
+          },
+          "traitement": "Mettre a jour les informations du livre et publier les changements."
+        }
+      ]
+    },
+    {
+      "nom": "Membres",
+      "responsabilite": "Gerer les comptes des lecteurs.",
+      "commandes": [
+        {
+          "nom": "InscrireMembre",
+          "entrees": {
+            "nom": "string",
+            "email": "string"
+          },
+          "traitement": "Creer un membre et publier ses informations utiles aux autres services."
+        },
+        {
+          "nom": "ModifierMembre",
+          "entrees": {
+            "membreId": "string",
+            "nom": "string",
+            "statut": "string"
+          },
+          "traitement": "Mettre a jour le membre et publier les champs modifies."
+        }
+      ]
+    },
+    {
+      "nom": "Emprunts",
+      "responsabilite": "Enregistrer les emprunts et les retours avec les copies locales du livre et du membre.",
+      "commandes": [
+        {
+          "nom": "EnregistrerEmprunt",
+          "entrees": {
+            "livreId": "string",
+            "membreId": "string",
+            "dateEmprunt": "date",
+            "dateRetourPrevue": "date"
+          },
+          "traitement": "Verifier les copies locales du livre et du membre, puis creer un emprunt en cours."
+        },
+        {
+          "nom": "EnregistrerRetour",
+          "entrees": {
+            "empruntId": "string",
+            "dateRetour": "date"
+          },
+          "traitement": "Marquer l'emprunt comme retourne et publier le nouvel etat."
+        }
+      ]
+    },
+    {
+      "nom": "Statistiques",
+      "responsabilite": "Construire une vue resumee a partir des evenements d'emprunt.",
+      "commandes": [
+        {
+          "nom": "MettreAJourStatistiques",
+          "entrees": {
+            "evenementEmprunt": "object"
+          },
+          "traitement": "Mettre a jour la projection mensuelle sans lire directement la base du service Emprunts."
+        }
+      ]
+    }
+  ]
+}
