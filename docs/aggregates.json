@@ -1,0 +1,84 @@
+{
+  "projet": "BiblioCampus",
+  "agregats": [
+    {
+      "nom": "Livre",
+      "serviceProprietaire": "Catalogue",
+      "identifiant": "livreId",
+      "donnees": {
+        "livreId": "string",
+        "titre": "string",
+        "auteur": "string",
+        "isbn": "string",
+        "nombreExemplaires": "integer"
+      }
+    },
+    {
+      "nom": "Membre",
+      "serviceProprietaire": "Membres",
+      "identifiant": "membreId",
+      "donnees": {
+        "membreId": "string",
+        "nom": "string",
+        "email": "string",
+        "statut": "string"
+      }
+    },
+    {
+      "nom": "Emprunt",
+      "serviceProprietaire": "Emprunts",
+      "identifiant": "empruntId",
+      "donnees": {
+        "empruntId": "string",
+        "livreId": "string",
+        "membreId": "string",
+        "dateEmprunt": "date",
+        "dateRetourPrevue": "date",
+        "dateRetour": "date|null",
+        "statut": "en_cours|retourne"
+      }
+    }
+  ],
+  "replicas": [
+    {
+      "nom": "LivrePourEmprunt",
+      "serviceSource": "Catalogue",
+      "serviceReplica": "Emprunts",
+      "identifiant": "livreId",
+      "raison": "Le service Emprunts verifie la disponibilite sans interroger le Catalogue.",
+      "donnees": {
+        "livreId": "string",
+        "titre": "string",
+        "auteur": "string",
+        "nombreExemplaires": "integer",
+        "version": "integer"
+      }
+    },
+    {
+      "nom": "MembrePourEmprunt",
+      "serviceSource": "Membres",
+      "serviceReplica": "Emprunts",
+      "identifiant": "membreId",
+      "raison": "Le service Emprunts verifie que le membre peut emprunter sans interroger Membres.",
+      "donnees": {
+        "membreId": "string",
+        "nom": "string",
+        "statut": "actif|suspendu",
+        "version": "integer"
+      }
+    },
+    {
+      "nom": "EmpruntPourStatistiques",
+      "serviceSource": "Emprunts",
+      "serviceReplica": "Statistiques",
+      "identifiant": "empruntId",
+      "raison": "Le service Statistiques conserve les donnees utiles a sa projection.",
+      "donnees": {
+        "empruntId": "string",
+        "dateEmprunt": "date",
+        "statut": "en_cours|retourne",
+        "version": "integer"
+      }
+    }
+  ]
+}
