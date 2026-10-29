@@ -1,0 +1,78 @@
+{
+  "projet": "BiblioCampus",
+  "projection": {
+    "nom": "EmpruntsParMois",
+    "service": "Statistiques",
+    "source": "replica EmpruntPourStatistiques recu du service Emprunts",
+    "declencheurs": [
+      "EmpruntCree",
+      "EmpruntMisAJour"
+    ],
+    "transformation": "Regrouper les emprunts par mois de dateEmprunt et compter les emprunts par statut.",
+    "agregatProjete": {
+      "mois": "YYYY-MM",
+      "totalEmprunts": "integer",
+      "empruntsEnCours": "integer",
+      "empruntsRetournes": "integer"
+    },
+    "requeteMongoDB": [
+      {
+        "$group": {
+          "_id": {
+            "$dateToString": {
+              "format": "%Y-%m",
+              "date": {
+                "$toDate": "$dateEmprunt"
+              }
+            }
+          },
+          "totalEmprunts": {
+            "$sum": 1
+          },
+          "empruntsEnCours": {
+            "$sum": {
+              "$cond": [
+                {
+                  "$eq": [
+                    "$statut",
+                    "en_cours"
+                  ]
+                },
+                1,
+                0
+              ]
+            }
+          },
+          "empruntsRetournes": {
+            "$sum": {
+              "$cond": [
+                {
+                  "$eq": [
+                    "$statut",
+                    "retourne"
+                  ]
+                },
+                1,
+                0
+              ]
+            }
+          }
+        }
+      },
+      {
+        "$project": {
+          "_id": 0,
+          "mois": "$_id",
+          "totalEmprunts": 1,
+          "empruntsEnCours": 1,
+          "empruntsRetournes": 1
+        }
+      },
+      {
+        "$sort": {
+          "mois": 1
+        }
+      }
+    ]
+  }
+}
